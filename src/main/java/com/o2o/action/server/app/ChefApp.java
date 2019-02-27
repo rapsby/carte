@@ -37,7 +37,7 @@ public class ChefApp extends DialogflowApp {
 
 		AndroidApp app = new AndroidApp();
 		app.setPackageName("kr.o2o.app.android.o2omediaviewer");
-		
+	
 		Button learnMoreButton = new Button().setTitle("This is a Button")
 				.setOpenUrlAction(new OpenUrlAction().setUrl("https://csnopy.iptime.org/android/movie"));//.setAndroidApp(app));
 		List<Button> buttons = new ArrayList<>();
@@ -56,7 +56,6 @@ public class ChefApp extends DialogflowApp {
 		responseBuilder.addSuggestions(new String[] { "Suggestion chips", "suggestion 1", "suggestion 3" }).add(
 				new LinkOutSuggestion().setDestinationName("Suggestion link").setUrl("https://assistant.google.com"));
 		ActionResponse response = responseBuilder.build();
-		System.out.println(response.toJson());
 		return response;
 	}
 
