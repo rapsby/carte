@@ -1,5 +1,7 @@
 package com.o2o.action.server.rest;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +28,7 @@ public class ChefController {
 	private final App testCap;
 
 	@Autowired
-	private DateMenuRepository repository;
+	private DateMenuRepository menuRepository;
 	@Autowired
 	private MealDetailRepository detailRepository;
 
@@ -70,11 +72,26 @@ public class ChefController {
 		 * detail = detailRepository.save(detail);
 		 */
 
-		Iterable<MealMenu> menus = repository.findAll();
+		Iterable<MealMenu> menus = menuRepository.findAll();
 		for (MealMenu dateMenu : menus) {
 			System.out.println(dateMenu.getDessert());
 		}
 		return "Good";
+	}
+
+	@RequestMapping(value = "/api/1.0/mealmenu", method = RequestMethod.GET)
+	public @ResponseBody Object getMealMenu(HttpServletRequest request, HttpServletResponse response) {
+		Iterable<MealMenu> menus = menuRepository.findAll();
+
+		return makeCollection(menus);
+	}
+
+	private static <E> Collection<E> makeCollection(Iterable<E> iter) {
+		Collection<E> list = new ArrayList<E>();
+		for (E item : iter) {
+			list.add(item);
+		}
+		return list;
 	}
 
 	private Map<String, String> getHeadersMap(HttpServletRequest request) {
