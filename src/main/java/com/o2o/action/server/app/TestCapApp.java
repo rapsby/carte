@@ -33,7 +33,7 @@ import com.google.api.services.dialogflow_fulfillment.v2.model.QueryResult;
 
 public class TestCapApp extends DialogflowApp {
 
-	@ForIntent("Media Demo")
+	@ForIntent("Media Demo1")
 	public ActionResponse mediaDemo(ActionRequest request) throws ExecutionException, InterruptedException {
 		ResponseBuilder responseBuilder = getResponseBuilder(request);
 
