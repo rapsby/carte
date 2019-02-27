@@ -18,10 +18,10 @@ import com.google.actions.api.App;
 import com.o2o.action.server.app.ChefApp;
 
 @RestController
-public class SimpleActionController {
+public class ChefController {
 	private final App testCap;
 
-	public SimpleActionController() {
+	public ChefController() {
 		testCap = new ChefApp();
 	}
 
