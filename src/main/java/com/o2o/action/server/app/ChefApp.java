@@ -21,6 +21,7 @@ import com.google.api.services.actions_fulfillment.v2.model.CarouselBrowse;
 import com.google.api.services.actions_fulfillment.v2.model.CarouselBrowseItem;
 import com.google.api.services.actions_fulfillment.v2.model.CarouselSelectCarouselItem;
 import com.google.api.services.actions_fulfillment.v2.model.Image;
+import com.google.api.services.actions_fulfillment.v2.model.LinkOutSuggestion;
 import com.google.api.services.actions_fulfillment.v2.model.ListSelectListItem;
 import com.google.api.services.actions_fulfillment.v2.model.OpenUrlAction;
 import com.google.api.services.actions_fulfillment.v2.model.OptionInfo;
@@ -34,21 +35,26 @@ public class ChefApp extends DialogflowApp {
 	public ActionResponse welcome(ActionRequest request) throws ExecutionException, InterruptedException {
 		ResponseBuilder responseBuilder = getResponseBuilder(request);
 
+		AndroidApp app = new AndroidApp();
+		app.setPackageName("kr.o2o.app.android.o2omediaviewer");
+		
 		Button learnMoreButton = new Button().setTitle("This is a Button")
-				.setOpenUrlAction(new OpenUrlAction().setUrl("https://assistant.google.com"));
+				.setOpenUrlAction(new OpenUrlAction().setUrl("https://csnopy.iptime.org/android/movie"));//.setAndroidApp(app));
 		List<Button> buttons = new ArrayList<>();
 		buttons.add(learnMoreButton);
 		String text = "This is a basic card.  Text in a basic card can include \"quotes\" and\n"
 				+ "  most other unicode characters including emoji \uD83D\uDCF1. Basic cards also support\n"
 				+ "  some markdown formatting like *emphasis* or _italics_, **strong** or\n"
 				+ "  __bold__, and ***bold itallic*** or ___strong emphasis___ as well as other\n"
-				+ "  things like line  \\nbreaks";
+				+ "  things like line  \nbreaks";
 		responseBuilder.add("This is a basic card").add(new BasicCard().setTitle("This is a title")
 				.setSubtitle("This is a subtitle").setFormattedText(text)
 				.setImage(
-						new Image().setUrl("http://example.com/image.png").setAccessibilityText("Image alternate text"))
+						new Image().setUrl("https://csnopy.iptime.org/test/IMG_0207.PNG").setAccessibilityText("Image alternate text"))
 				.setImageDisplayOptions("CROPPED").setButtons(buttons));
 
+		responseBuilder.addSuggestions(new String[] { "Suggestion chips", "suggestion 1", "suggestion 3" }).add(
+				new LinkOutSuggestion().setDestinationName("Suggestion link").setUrl("https://assistant.google.com"));
 		ActionResponse response = responseBuilder.build();
 		System.out.println(response.toJson());
 		return response;
