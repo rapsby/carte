@@ -12,7 +12,6 @@ import com.google.actions.api.Capability;
 import com.google.actions.api.DialogflowApp;
 import com.google.actions.api.ForIntent;
 import com.google.actions.api.response.ResponseBuilder;
-import com.google.actions.api.response.helperintent.HelperIntent;
 import com.google.actions.api.response.helperintent.SelectionCarousel;
 import com.google.actions.api.response.helperintent.SelectionList;
 import com.google.api.services.actions_fulfillment.v2.model.AndroidApp;
@@ -21,9 +20,7 @@ import com.google.api.services.actions_fulfillment.v2.model.Button;
 import com.google.api.services.actions_fulfillment.v2.model.CarouselBrowse;
 import com.google.api.services.actions_fulfillment.v2.model.CarouselBrowseItem;
 import com.google.api.services.actions_fulfillment.v2.model.CarouselSelectCarouselItem;
-import com.google.api.services.actions_fulfillment.v2.model.ExpectedIntent;
 import com.google.api.services.actions_fulfillment.v2.model.Image;
-import com.google.api.services.actions_fulfillment.v2.model.LinkValueSpec;
 import com.google.api.services.actions_fulfillment.v2.model.ListSelectListItem;
 import com.google.api.services.actions_fulfillment.v2.model.OpenUrlAction;
 import com.google.api.services.actions_fulfillment.v2.model.OptionInfo;
@@ -31,7 +28,31 @@ import com.google.api.services.actions_fulfillment.v2.model.SimpleResponse;
 import com.google.api.services.dialogflow_fulfillment.v2.model.Context;
 import com.google.api.services.dialogflow_fulfillment.v2.model.QueryResult;
 
-public class TestCapApp extends DialogflowApp {
+public class ChefApp extends DialogflowApp {
+
+	@ForIntent("Default Welcome Intent")
+	public ActionResponse welcome(ActionRequest request) throws ExecutionException, InterruptedException {
+		ResponseBuilder responseBuilder = getResponseBuilder(request);
+
+		Button learnMoreButton = new Button().setTitle("This is a Button")
+				.setOpenUrlAction(new OpenUrlAction().setUrl("https://assistant.google.com"));
+		List<Button> buttons = new ArrayList<>();
+		buttons.add(learnMoreButton);
+		String text = "This is a basic card.  Text in a basic card can include \"quotes\" and\n"
+				+ "  most other unicode characters including emoji \uD83D\uDCF1. Basic cards also support\n"
+				+ "  some markdown formatting like *emphasis* or _italics_, **strong** or\n"
+				+ "  __bold__, and ***bold itallic*** or ___strong emphasis___ as well as other\n"
+				+ "  things like line  \\nbreaks";
+		responseBuilder.add("This is a basic card").add(new BasicCard().setTitle("This is a title")
+				.setSubtitle("This is a subtitle").setFormattedText(text)
+				.setImage(
+						new Image().setUrl("http://example.com/image.png").setAccessibilityText("Image alternate text"))
+				.setImageDisplayOptions("CROPPED").setButtons(buttons));
+
+		ActionResponse response = responseBuilder.build();
+		System.out.println(response.toJson());
+		return response;
+	}
 
 	@ForIntent("Media Demo1")
 	public ActionResponse mediaDemo(ActionRequest request) throws ExecutionException, InterruptedException {
@@ -49,7 +70,6 @@ public class TestCapApp extends DialogflowApp {
 		Button learnMoreButton = new Button().setTitle("This is a Button")
 				.setOpenUrlAction(new OpenUrlAction().setUrl(url));
 		buttons.add(learnMoreButton);
-		String text = "This is a basic card.";
 
 		if (!request.hasCapability(Capability.SCREEN_OUTPUT.getValue())) {
 			return responseBuilder
@@ -78,17 +98,6 @@ public class TestCapApp extends DialogflowApp {
 
 		responseBuilder.add("검색된 영화입니다.").add(new CarouselBrowse().setItems(items));
 		// responseBuilder.addSuggestions(new String[]{"심슨", "안시성", "아쿠아맨"});
-
-		ExpectedIntent ei = new ExpectedIntent();
-		ei.setIntent("actions.intent.LINK");
-		LinkValueSpec spec = new LinkValueSpec();
-		spec.set("@type", "type.googleapis.com/google.actions.v2.LinkValueSpec");
-		spec.setOpenUrlAction(new OpenUrlAction().setUrl(url).setAndroidApp(app));
-		ei.setInputValueData(spec);
-
-		List<ExpectedIntent> eis = new ArrayList<ExpectedIntent>();
-		eis.add(ei);
-		// responseBuilder.setHelperIntents$actions_on_google(eis);
 
 		return responseBuilder.build();
 	}

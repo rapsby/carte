@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.actions.api.App;
-import com.o2o.action.server.app.TestCapApp;
+import com.o2o.action.server.app.ChefApp;
 
 @RestController
 public class SimpleActionController {
 	private final App testCap;
 
 	public SimpleActionController() {
-		testCap = new TestCapApp();
+		testCap = new ChefApp();
 	}
 
 	@RequestMapping(value = "/simple", method = RequestMethod.POST)

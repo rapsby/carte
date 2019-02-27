@@ -60,6 +60,7 @@ remotes {
 
 task deploy {
 	dependsOn 'bootWar'
+	group = 'application'
 
 	doLast {
 		String path = bootWar.destinationDirectory.getAsFile().get();
