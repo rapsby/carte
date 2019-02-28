@@ -12,20 +12,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebFilter(urlPatterns = "/manager")
-public class ManagerFilter implements Filter {
+@WebFilter(urlPatterns = "/manager/*")
+public class AdminFilter implements Filter {
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
-		System.out.println("filter for req : " + req.getServletPath());
+		System.out.println("ManagerFilter for req : " + req.getServletPath() + "," + req.getMethod());
 
-		boolean checkAuth = false;
-		if (req.getMethod().equalsIgnoreCase("get")) {
-			checkAuth = true;
-		}
+		boolean checkAuth = true;
+		// if (req.getMethod().equalsIgnoreCase("get")) {
+		// checkAuth = true;
+		// }
 
 		if (checkAuth) {
 			HttpSession httpSession = req.getSession();

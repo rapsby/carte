@@ -20,23 +20,27 @@ public class APIFilter implements Filter {
 			throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
-		System.out.println("filter for req : " + req.getServletPath());
+		System.out.println("APIFilter for req : " + req.getServletPath() + "," + req.getMethod() + "," + req.getPathInfo() + "," + req.getServletPath());
 
 		boolean checkAuth = false;
-		if (req.getMethod().equalsIgnoreCase("get")) {
-			checkAuth = true;
+		if (req.getServletPath().equalsIgnoreCase("/api/1.0/login") || req.getServletPath().equalsIgnoreCase("/api/1.0/logout")) {
+		} else {
+			if (!req.getMethod().equalsIgnoreCase("get")) {
+				checkAuth = true;
+			}
 		}
+		
 
 		if (checkAuth) {
 			HttpSession httpSession = req.getSession();
 			if (httpSession == null) {
-				resp.sendRedirect(req.getContextPath() + "/login.html");
+				resp.sendRedirect(req.getContextPath() + "/login");
 				return;
 			}
 
 			String userId = (String) httpSession.getAttribute("userId");
 			if (userId == null || userId.length() < 0) {
-				resp.sendRedirect(req.getContextPath() + "/login.html");
+				resp.sendRedirect(req.getContextPath() + "/login");
 				return;
 			}
 
