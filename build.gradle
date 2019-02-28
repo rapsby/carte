@@ -67,13 +67,13 @@ task deploy {
 		String filename = bootWar.archiveFileName.get();
 		ssh.run {
 			session(remotes.webServer) {
-				execute ("sudo service tomcat stop")
+				//execute ("sudo service tomcat stop")
 				//execute ("rm -rf /opt/tomcat/webapps/chef)
 				put from: "${path}/${filename}", into: './'
 				//execute ("mkdir /opt/tomcat/webapps/chef")
 				execute ("sudo chown tomcat ${filename}")
 				execute ("sudo mv ${filename} /opt/tomcat/webapps/chef.war")
-				execute ("sudo service tomcat start")
+				//execute ("sudo service tomcat start")
 				//execute ("cd \$HOME; /usr/bin/pkill -f 'java -jar ${filename}'", ignoreError: true)
 				//execute ("cd \$HOME; authbind --deep java -jar ${filename} < /dev/null > log/server_out.log 2> log/server_err.log & ")
 			}
