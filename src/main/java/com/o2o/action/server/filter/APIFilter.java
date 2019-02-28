@@ -1,0 +1,47 @@
+package com.o2o.action.server.filter;
+
+import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+@WebFilter(urlPatterns = "/api/1.0/*")
+public class APIFilter implements Filter {
+
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse resp = (HttpServletResponse) response;
+		System.out.println("filter for req : " + req.getServletPath());
+
+		boolean checkAuth = false;
+		if (req.getMethod().equalsIgnoreCase("get")) {
+			checkAuth = true;
+		}
+
+		if (checkAuth) {
+			HttpSession httpSession = req.getSession();
+			if (httpSession == null) {
+				resp.sendRedirect(req.getContextPath() + "/login.html");
+				return;
+			}
+
+			String userId = (String) httpSession.getAttribute("userId");
+			if (userId == null || userId.length() < 0) {
+				resp.sendRedirect(req.getContextPath() + "/login.html");
+				return;
+			}
+
+		}
+		chain.doFilter(request, response);
+	}
+
+}

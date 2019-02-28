@@ -1,5 +1,6 @@
 package com.o2o.action.server.rest;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -9,11 +10,13 @@ import java.util.concurrent.ExecutionException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -84,6 +87,55 @@ public class ChefController {
 		Iterable<MealMenu> menus = menuRepository.findAll();
 
 		return makeCollection(menus);
+	}
+
+	@RequestMapping(value = "/api/1.0/login", method = RequestMethod.GET)
+	public void login(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession httpSession = request.getSession();
+		if (httpSession != null) {
+			String userId = (String) httpSession.getAttribute("userId");
+		}
+	}
+
+	@RequestMapping(value = "/api/1.0//login", method = RequestMethod.POST)
+	public void login(@RequestParam(value = "inputID", required = true) String id,
+			@RequestParam(value = "inputPassword", required = true) String passwd, HttpServletRequest request,
+			HttpServletResponse response) {
+		if (id != null && passwd != null && id.length() > 0 && passwd.length() > 0) {
+			if (id.trim().equalsIgnoreCase("admin") && passwd.trim().equalsIgnoreCase("1234")) {
+				request.getSession().setAttribute("userId", "admin");
+				try {
+					response.sendRedirect(request.getContextPath() + "/");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				try {
+					response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		} else {
+			try {
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@RequestMapping(value = "/api/1.0/logout", method = RequestMethod.POST)
+	public void logout(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession httpSession = request.getSession();
+		if (httpSession != null) {
+			httpSession.removeAttribute("userId");
+		}
+		try {
+			response.sendRedirect(request.getContextPath() + "/");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private static <E> Collection<E> makeCollection(Iterable<E> iter) {
