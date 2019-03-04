@@ -7,13 +7,23 @@ $(document).ready(function() {
 	contextRoot = $('meta[name=contextRoot]').attr("content");
 	console.log(contextRoot);
 
+	var pickr = $("#meal-date").flatpickr({
+		onChange : function(dates, str, pickr) {
+			console.log(dates);
+			reload();
+		}
+	});
+	pickr.setDate(new Date());
+	
 	reload();
 });
 
 function reload() {
+	console.log($("#meal-date").val());
+
 	$.ajax({
-        url:contextRoot+'/api/1.0/mealmenu',
-        success:function(data){
+        url : contextRoot+'/api/1.0/mealmenu?currentDate='+$("#meal-date").val(),
+        success : function(data){
         	var html = '';
             if (data != null) {
             	var minSDay = null;
@@ -23,10 +33,10 @@ function reload() {
             			break;
             		}
             	}
-            	
+
             	if (minSDay != null) {
             		var oriStartDay = minSDay.startOf('week');
-            		
+
             		//var rows = [];
             		for (var z = 0; z < 9; z++) {
             			//rows[z] = '<tr>';
@@ -70,7 +80,7 @@ function reload() {
 	            		html += '</tr>';
             		}
             	} else {
-            		html += '<tbody><tr>no data.</tr></tbody>';
+            		html += '<tr><td>no data.</td></tr>';
             	}
             	console.log();
             }

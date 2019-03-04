@@ -2,8 +2,7 @@
 <html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="contextRoot" data-th-attr="content=${#request.contextPath}">
 <meta name="userId" data-th-attr="content=${session.userId}">
 
@@ -41,33 +40,25 @@ body {
 <body class="d-flex flex-column h-100">
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
 		<a class="navbar-brand" th:href="@{/}">O2O Chef</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
-			data-target="#navbarsExampleDefault"
-			aria-controls="navbarsExampleDefault" aria-expanded="false"
-			aria-label="Toggle navigation">
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
+			aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 
 		<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link" th:href="@{/}">Home
-						<span class="sr-only">(current)</span>
+				<li class="nav-item active"><a class="nav-link" th:href="@{/}">Home <span class="sr-only">(current)</span>
 				</a></li>
-				<li class="nav-item"><a class="nav-link" th:href="@{/manager}">관리</a>
-				</li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/manager}">관리</a></li>
 				<!-- <li class="nav-item">
         <a class="nav-link disabled" th:href="@{/}" tabindex="-1" aria-disabled="true">Disabled</a>
       </li>
        -->
 			</ul>
-			<form th:if="${session.userId} == null"
-				class="form-inline my-2 my-lg-0" id="form-login"
-				th:action="@{/login}" method="get">
+			<form th:if="${session.userId} == null" class="form-inline my-2 my-lg-0" id="form-login" th:action="@{/login}" method="get">
 				<button class="btn btn-secondary my-2 my-sm-0" type="submit">Login</button>
 			</form>
-			<form th:unless="${session.userId} == null"
-				class="form-inline my-2 my-lg-0" id="form-logout"
-				th:action="@{/api/1.0/logout}" method="post">
+			<form th:unless="${session.userId} == null" class="form-inline my-2 my-lg-0" id="form-logout" th:action="@{/api/1.0/logout}" method="post">
 				<button class="btn btn-secondary my-2 my-sm-0" type="submit">Logout</button>
 			</form>
 		</div>
@@ -77,7 +68,11 @@ body {
 	<div class="starter-template">
 		<h1>O2O 구내 식당 메뉴</h1>
 		<p class="lead">요기에 주간 메뉴 표시 예정</p>
-		<input type="text" class="form-control" id="meal-date" placeholder="Date" required>
+		<form>
+			<div class="col-3" style="margin: 0 auto;">
+				<input type="text" class="form-control" id="meal-date" placeholder="Date" style="text-align: center;">
+			</div>
+		</form>
 		<table id="meal-menu">
 		</table>
 	</div>

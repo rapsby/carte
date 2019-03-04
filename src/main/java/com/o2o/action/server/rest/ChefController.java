@@ -1,6 +1,7 @@
 package com.o2o.action.server.rest;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -101,8 +102,14 @@ public class ChefController {
 	public @ResponseBody Object getMealMenu(
 			@RequestParam(value = "fromDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date fromDate,
 			@RequestParam(value = "toDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date toDate,
+			@RequestParam(value = "currentDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date curDate,
 			HttpServletRequest request, HttpServletResponse response) {
 		Calendar c = Calendar.getInstance();
+		if (curDate != null) {
+			c.setTime(curDate);
+			System.out.println(c.getTime().toString());
+		}
+		
 		if (fromDate == null) {
 			c.set(Calendar.DAY_OF_WEEK, c.getActualMinimum(Calendar.DAY_OF_WEEK));
 			fromDate = c.getTime();
