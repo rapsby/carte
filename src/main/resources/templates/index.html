@@ -27,7 +27,7 @@ body {
 
 .container {
 	width: auto;
-	max-width: 680px;
+	max-width: 1280px;
 	padding: 0 15px;
 }
 
@@ -67,13 +67,15 @@ body {
 	<main role="main" class="container">
 	<div class="starter-template">
 		<h1>O2O 구내 식당 메뉴</h1>
-		<p class="lead">요기에 주간 메뉴 표시 예정</p>
+		<p class="lead"></p>
 		<form>
-			<div class="col-3" style="margin: 0 auto;">
+			<div style="margin: 0 auto; max-width: 200px;">
+				<label for="meal-date">날짜</label>
 				<input type="text" class="form-control" id="meal-date" placeholder="Date" style="text-align: center;">
 			</div>
 		</form>
-		<table id="meal-menu">
+		<br>
+		<table id="meal-menu" class="table table-bordered">
 		</table>
 	</div>
 	</main>
