@@ -5,11 +5,11 @@ $(document).ready(function() {
 	console.log(begin.format());
 
 	contextRoot = $('meta[name=contextRoot]').attr("content");
-	console.log(contextRoot);
+	if (!contextRoot)
+		contextRoot = '';
 
 	var pickr = $("#meal-date").flatpickr({
 		onChange : function(dates, str, pickr) {
-			console.log(dates);
 			reload();
 		}
 	});
@@ -99,7 +99,7 @@ function reload() {
 
 			$('#meal-menu').html(html);
 		}
-	})
+	});
 }
 
 function makeMealDetailHtml(menuDetail, isToday) {
@@ -115,6 +115,5 @@ function makeMealDetailHtml(menuDetail, isToday) {
 	} else {
 		html += '<td colspan="7" ' + isToday + '>N/A</td>';
 	}
-	console.log(html);
 	return html;
 }
