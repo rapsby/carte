@@ -10,3 +10,5 @@ bin
 .classpath
 
 .idea
+*.iml
+local.properties
