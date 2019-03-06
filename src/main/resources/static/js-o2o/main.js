@@ -2,7 +2,6 @@ var contextRoot = null;
 
 $(document).ready(function() {
 	var begin = moment().startOf('week');
-	console.log(begin.format());
 
 	contextRoot = $('meta[name=contextRoot]').attr("content");
 	if (!contextRoot)
@@ -22,7 +21,7 @@ function reload() {
 	console.log($("#meal-date").val());
 
 	$.ajax({
-		url : contextRoot + '/api/1.0/mealmenu?currentDate=' + $("#meal-date").val(),
+		url : contextRoot + '/api/1.0/mealmenus?currentDate=' + $("#meal-date").val(),
 		success : function(data) {
 			var html = '';
 			if (data != null) {

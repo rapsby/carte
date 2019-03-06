@@ -94,9 +94,9 @@ public class ChefController {
         return "Good";
     }
 
-    @RequestMapping(value = "/api/1.0/mealmenu", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/1.0/mealmenus", method = RequestMethod.GET)
     public @ResponseBody
-    Object getMealMenu(
+    Object getMealMenus(
             @RequestParam(value = "fromDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date fromDate,
             @RequestParam(value = "toDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date toDate,
             @RequestParam(value = "currentDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date curDate,
@@ -124,6 +124,60 @@ public class ChefController {
         Iterable<MealMenu> menus = menuRepository.findByServiceDateBetweenOrderByServiceDateAsc(fromDate, toDate);
 
         return makeCollection(menus);
+    }
+
+    @RequestMapping(value = "/api/1.0/mealmenu", method = RequestMethod.GET)
+    public @ResponseBody
+    Object getMealMenu(@RequestParam(value = "currentDate") @DateTimeFormat(iso = ISO.DATE) Date curDate,
+                       HttpServletRequest request, HttpServletResponse response) {
+        if (curDate != null) {
+            Iterable<MealMenu> menus = menuRepository.findByServiceDate(curDate);
+            if (menus.iterator().hasNext()) {
+                System.out.println("good");
+                return menus.iterator().next();
+            }
+        }
+        return null;
+    }
+
+    @RequestMapping(value = "/api/1.0/mealmenu", method = RequestMethod.PUT)
+    public @ResponseBody
+    Object updateMealMenu(@RequestBody MealMenu mealMenu,
+                          HttpServletRequest request, HttpServletResponse response) {
+        if (mealMenu != null) {
+            MealMenu eMenus = menuRepository.findById(mealMenu.getId()).get();
+            //TODO 이때 모든 값을 업데이트 하면 안되므로 추가 확인이 필요1
+            if (eMenus != null) {
+                menuRepository.save(mealMenu);
+            } else {
+                return null;
+            }
+
+            for (MealDetail mealDetail : mealMenu.getMeals()) {
+                 MealDetail eMealDetail = detailRepository.findById(mealDetail.getId()).get();
+                //TODO 이때 모든 값을 업데이트 하면 안되므로 추가 확인이 필요2
+                 if (eMealDetail != null) {
+                     detailRepository.save(mealDetail);
+                 }
+            }
+        }
+        return null;
+    }
+
+    @RequestMapping(value = "/api/1.0/mealmenu", method = RequestMethod.POST)
+    public @ResponseBody
+    Object createMealMenu(@RequestBody MealMenu mealMenu,
+                          HttpServletRequest request, HttpServletResponse response) {
+        if (mealMenu != null) {
+            List<MealDetail> newDetails = new ArrayList<MealDetail>();
+            for (MealDetail mealDetail : mealMenu.getMeals()) {
+                newDetails.add(detailRepository.save(mealDetail));
+            }
+
+            mealMenu.setMeals(newDetails);
+            return menuRepository.save(mealMenu);
+        }
+        return null;
     }
 
     @RequestMapping(value = "/api/1.0/login", method = RequestMethod.POST)
