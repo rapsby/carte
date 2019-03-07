@@ -2,6 +2,7 @@ package com.o2o.action.server.rest;
 
 import com.google.actions.api.App;
 import com.o2o.action.server.app.ChefApp;
+import com.o2o.action.server.app.GogumaApp;
 import com.o2o.action.server.db.MealDetail;
 import com.o2o.action.server.db.MealDetail.MealType;
 import com.o2o.action.server.db.MealMenu;
@@ -22,7 +23,8 @@ import java.util.concurrent.ExecutionException;
 
 @RestController
 public class ChefController {
-    private final App testCap;
+    private final App goguma;
+    private final ChefApp dchef;
 
     @Autowired
     private DateMenuRepository menuRepository;
@@ -30,7 +32,8 @@ public class ChefController {
     private MealDetailRepository detailRepository;
 
     public ChefController() {
-        testCap = new ChefApp();
+        goguma = new GogumaApp();
+        dchef = new ChefApp();
     }
 
     private static <E> Collection<E> makeCollection(Iterable<E> iter) {
@@ -48,7 +51,26 @@ public class ChefController {
         String jsonResponse = null;
         try {
             System.out.println("request : " + body);
-            jsonResponse = testCap.handleRequest(body, getHeadersMap(request)).get();
+            jsonResponse = goguma.handleRequest(body, getHeadersMap(request)).get();
+            System.out.println("response : " + jsonResponse);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        return jsonResponse;
+    }
+
+    @RequestMapping(value = "/dchef", method = RequestMethod.POST)
+    public @ResponseBody
+    String processDChef(@RequestBody String body, HttpServletRequest request,
+                  HttpServletResponse response) {
+        String jsonResponse = null;
+        try {
+            System.out.println("request : " + body);
+            dchef.setMenuRepository(menuRepository);
+            jsonResponse = dchef.handleRequest(body, getHeadersMap(request)).get();
             System.out.println("response : " + jsonResponse);
         } catch (InterruptedException e) {
             e.printStackTrace();
