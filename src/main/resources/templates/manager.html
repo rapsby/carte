@@ -1,23 +1,23 @@
 <!doctype html>
 <html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="utf-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="contextRoot" data-th-attr="content=${#request.contextPath}">
-<meta name="userId" data-th-attr="content=${session.userId}">
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="contextRoot" data-th-attr="content=${#request.contextPath}">
+    <meta name="userId" data-th-attr="content=${session.userId}">
 
-<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-<link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
-<script th:src="@{/js/jquery-3.3.1.min.js}"></script>
-<script th:src="@{/js/popper.min.js}"></script>
-<script th:src="@{/js/bootstrap.min.js}"></script>
-<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/js/moment-with-locales.min.js}"></script>
-<script th:src="@{/js/flatpickr.js}"></script>
-<script th:src="@{/js-o2o/manager.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
+    <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/moment-with-locales.min.js}"></script>
+    <script th:src="@{/js/flatpickr.js}"></script>
+    <script th:src="@{/js-o2o/manager.js}"></script>
 
-<style>
+    <style>
 body {
 	padding-top: 5rem;
 }
@@ -37,62 +37,186 @@ body {
 	background-color: #f5f5f5;
 	text-align: center;
 }
-</style>
+
+
+
+    </style>
 </head>
 <body class="w-100 h-100">
-	<div class="d-flex w-100 h-100 mx-auto flex-column">
-	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-		<a class="navbar-brand" th:href="@{/}">O2O Chef</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
-			data-target="#navbarsExampleDefault"
-			aria-controls="navbarsExampleDefault" aria-expanded="false"
-			aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
+<div class="d-flex w-100 h-100 mx-auto flex-column">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" th:href="@{/}">O2O Chef</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarsExampleDefault"
+                aria-controls="navbarsExampleDefault" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-		<div class="collapse navbar-collapse" id="navbarsExampleDefault">
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
-				<li class="nav-item active"><a class="nav-link"
-					th:href="@{/manager}">관리 <span class="sr-only">(current)</span></a></li>
-			</ul>
-		</div>
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
+                <li class="nav-item active"><a class="nav-link"
+                                               th:href="@{/manager}">관리 <span class="sr-only">(current)</span></a></li>
+            </ul>
+        </div>
 
-		<form th:if="${session.userId} == null"
-			class="form-inline my-2 my-lg-0" id="form-login"
-			th:action="@{/login}" method="get">
-			<button class="btn btn-secondary my-2 my-sm-0" type="submit">Login</button>
-		</form>
-		<form th:unless="${session.userId} == null"
-			class="form-inline my-2 my-lg-0" id="form-logout"
-			th:action="@{/api/1.0/logout}" method="post">
-			<button class="btn btn-secondary my-2 my-sm-0" type="submit">Logout</button>
-		</form>
-	</nav>
+        <form th:if="${session.userId} == null"
+              class="form-inline my-2 my-lg-0" id="form-login"
+              th:action="@{/login}" method="get">
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Login</button>
+        </form>
+        <form th:unless="${session.userId} == null"
+              class="form-inline my-2 my-lg-0" id="form-logout"
+              th:action="@{/api/1.0/logout}" method="post">
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Logout</button>
+        </form>
+    </nav>
 
-	<main role="main" class="container">
-	<div class="col-md-12">
-		<h4 class="mb-3" style="text-align: center;">메뉴 조회 및 수정</h4>
-		<form>
-			<div style="margin: 0 auto; max-width: 400px;" class="form-group row">
-				<label for="meal-date" class="col-sm-3 col-form-label">날짜</label>
-				<div class="col-sm-6">
-					<input type="text" class="form-control" id="meal-date" placeholder="Date" style="text-align: center;">
-				</div>
-				<div class="col-sm-3">
-					<button type="button" id="meal-edit" class="btn btn-primary">수정</button>
-					<button type="button" id="meal-create" class="btn btn-primary">추가</button>
-				</div>
-			</div>
-		</form>
-	</div>
-	</main>
+    <main role="main" class="container">
+        <div class="col-md-12">
+            <h4 class="mb-3" style="text-align: center;">메뉴 조회 및 수정</h4>
+            <form>
+                <div style="margin: 0 auto; max-width: 400px;" class="form-group row">
+                    <label for="meal-date" class="col-sm-3 col-form-label">날짜</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="meal-date" placeholder="Date"
+                               style="text-align: center;">
+                    </div>
+                    <div class="col-sm-3">
+                        <button type="button" id="meal-create" class="btn btn-primary" data-toggle="modal" data-target="#dialog-add">추가</button>
+                    </div>
+                </div>
+            </form>
+            <br>
+            <table class="table table-sm table-bordered table-dark" style="text-align: center;">
+                <thead>
+                <tr>
+                    <th scope="col">구분</th>
+                    <th scope="col" colspan="2">#</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td scope="row" rowspan="18">중식</td>
+                    <td scope="row" rowspan="7">Korea (4,500)</td>
+                    <td id="table-l1-1">.</td>
+                </tr>
+                <tr>
+                    <td id="table-l1-2">.</td>
+                </tr>
+                <tr>
+                    <td id="table-l1-3">.</td>
+                </tr>
+                <tr>
+                    <td id="table-l1-4">.</td>
+                </tr>
+                <tr>
+                    <td id="table-l1-5">.</td>
+                </tr>
+                <tr>
+                    <td id="table-l1-6">.</td>
+                </tr>
+                <tr>
+                    <td id="table-l1-7">.</td>
+                </tr>
+                <tr>
+                    <td scope="row" rowspan="7">Kitchen (4,500)</td>
+                    <td id="table-l2-1">.</td>
+                </tr>
+                <tr>
+                    <td id="table-l2-2">.</td>
+                </tr>
+                <tr>
+                    <td id="table-l2-3">.</td>
+                </tr>
+                <tr>
+                    <td id="table-l2-4">.</td>
+                </tr>
+                <tr>
+                    <td id="table-l2-5">.</td>
+                </tr>
+                <tr>
+                    <td id="table-l2-6">.</td>
+                </tr>
+                <tr>
+                    <td id="table-l2-7">.</td>
+                </tr>
+                <tr>
+                    <td rowspan="2">샐러드바</td>
+                    <td>.</td>
+                </tr>
+                <tr>
+                    <td>.</td>
+                </tr>
+                <tr>
+                    <td>잡곡밥</td>
+                    <td>cc</td>
+                </tr>
+                <tr>
+                    <td>후 식</td>
+                    <td>dd</td>
+                </tr>
+                <tr>
+                    <td rowspan="7">석식</td>
+                    <td rowspan="7">Kitchen (4,500)</td>
+                    <td>.</td>
+                </tr>
+                <tr>
+                    <td>.</td>
+                </tr>
+                <tr>
+                    <td>.</td>
+                </tr>
+                <tr>
+                    <td>.</td>
+                </tr>
+                <tr>
+                    <td>.</td>
+                </tr>
+                <tr>
+                    <td>.</td>
+                </tr>
+                <tr>
+                    <td>.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
 
-	<footer class="footer mt-auto py-3">
-		<div class="inner">
-			<span class="text-muted">&copy; O2O Inc. 2019</span>
-		</div>
-	</footer>
-	</div>
+    <footer class="footer mt-auto py-3">
+        <div class="inner">
+            <span class="text-muted">&copy; O2O Inc. 2019</span>
+        </div>
+    </footer>
+
+    <div class="modal fade" id="dialog-add" tabindex="-1" role="dialog" aria-labelledby="dialog-add" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dialog-add-title">메뉴 수정</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group row">
+                            <label for="form-edit-l1-menu1" class="col-sm-4 col-form-label">중식1 - 메뉴1</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="form-edit-l1-menu1" placeholder="메뉴1">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
