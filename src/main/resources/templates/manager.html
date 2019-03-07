@@ -39,7 +39,8 @@ body {
 }
 </style>
 </head>
-<body class="d-flex flex-column h-100 bg-light">
+<body class="w-100 h-100">
+	<div class="d-flex w-100 h-100 mx-auto flex-column">
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
 		<a class="navbar-brand" th:href="@{/}">O2O Chef</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -88,10 +89,10 @@ body {
 	</main>
 
 	<footer class="footer mt-auto py-3">
-		<div class="container">
-			<span class="text-muted">O2O Inc.</span>
+		<div class="inner">
+			<span class="text-muted">&copy; O2O Inc. 2019</span>
 		</div>
 	</footer>
-
+	</div>
 </body>
 </html>
