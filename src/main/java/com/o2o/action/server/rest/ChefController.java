@@ -148,17 +148,31 @@ public class ChefController {
             MealMenu eMenus = menuRepository.findById(mealMenu.getId()).get();
             //TODO 이때 모든 값을 업데이트 하면 안되므로 추가 확인이 필요1
             if (eMenus != null) {
-                menuRepository.save(mealMenu);
+                eMenus.setSalad1(mealMenu.getSalad1());
+                eMenus.setSalad2(mealMenu.getSalad2());
+                menuRepository.save(eMenus).getId();
             } else {
                 return null;
             }
 
             for (MealDetail mealDetail : mealMenu.getMeals()) {
-                 MealDetail eMealDetail = detailRepository.findById(mealDetail.getId()).get();
-                //TODO 이때 모든 값을 업데이트 하면 안되므로 추가 확인이 필요2
-                 if (eMealDetail != null) {
-                     detailRepository.save(mealDetail);
-                 }
+                if (mealDetail.getId() == 0) {
+                        mealDetail.setMealMenu(eMenus);
+                        detailRepository.save(mealDetail);
+                    } else {
+                        MealDetail eMealDetail = detailRepository.findById(mealDetail.getId()).get();
+                        //TODO 이때 모든 값을 업데이트 하면 안되므로 추가 확인이 필요2
+                        if (eMealDetail != null) {
+                            eMealDetail.setMenu1(mealDetail.getMenu1());
+                            eMealDetail.setMenu2(mealDetail.getMenu2());
+                            eMealDetail.setMenu3(mealDetail.getMenu3());
+                            eMealDetail.setMenu4(mealDetail.getMenu4());
+                            eMealDetail.setMenu5(mealDetail.getMenu5());
+                            eMealDetail.setMenu6(mealDetail.getMenu6());
+                            eMealDetail.setMenu7(mealDetail.getMenu7());
+                        detailRepository.save(eMealDetail);
+                    }
+                }
             }
         }
         return null;
@@ -169,13 +183,18 @@ public class ChefController {
     Object createMealMenu(@RequestBody MealMenu mealMenu,
                           HttpServletRequest request, HttpServletResponse response) {
         if (mealMenu != null) {
-            List<MealDetail> newDetails = new ArrayList<MealDetail>();
-            for (MealDetail mealDetail : mealMenu.getMeals()) {
-                newDetails.add(detailRepository.save(mealDetail));
+            List<MealDetail> tmpArray = new ArrayList<MealDetail>();
+            tmpArray = mealMenu.getMeals();
+
+            mealMenu.setMeals(null);
+            MealMenu eMealMenu = menuRepository.save(mealMenu);
+
+            for (MealDetail mealDetail : tmpArray) {
+                mealDetail.setMealMenu(eMealMenu);
+                detailRepository.save(mealDetail);
             }
 
-            mealMenu.setMeals(newDetails);
-            return menuRepository.save(mealMenu);
+            return eMealMenu.getId();
         }
         return null;
     }
