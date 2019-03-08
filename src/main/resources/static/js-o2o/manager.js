@@ -16,7 +16,29 @@ $(document).ready(function() {
         $('#form-edit-l1-menu1').val('');
         $('#form-edit-l1-menu2').val('');
         $('#form-edit-l1-menu3').val('');
+        $('#form-edit-l1-menu4').val('');
+        $('#form-edit-l1-menu5').val('');
+        $('#form-edit-l1-menu6').val('');
+        $('#form-edit-l1-menu7').val('');
+        $('#form-edit-l2-menu1').val('');
+        $('#form-edit-l2-menu2').val('');
+        $('#form-edit-l2-menu3').val('');
+        $('#form-edit-l2-menu4').val('');
+        $('#form-edit-l2-menu5').val('');
+        $('#form-edit-l2-menu6').val('');
+        $('#form-edit-l2-menu7').val('');
         $('#form-edit-salad1').val('');
+        $('#form-edit-salad2').val('');
+        $('#form-edit-mrice').val('');
+        $('#form-edit-dessert').val('');
+        $('#form-edit-d1-menu1').val('');
+        $('#form-edit-d1-menu2').val('');
+        $('#form-edit-d1-menu3').val('');
+        $('#form-edit-d1-menu4').val('');
+        $('#form-edit-d1-menu5').val('');
+        $('#form-edit-d1-menu6').val('');
+        $('#form-edit-d1-menu7').val('');
+
 
         if (isEdit) {
             $.ajax({
@@ -26,6 +48,10 @@ $(document).ready(function() {
                     if (data != null && data != '') {
                         var launch1 = null;
                         var launch2 = null;
+                        var salad1 = null;
+                        var salad2 = null;
+                        var mrice = null;
+                        var dessert = null;
                         var dinner = null;
 
                         for (var k = 0; k < data.meals.length; k++) {
@@ -33,6 +59,14 @@ $(document).ready(function() {
                                 launch1 = data.meals[k];
                             } else if (data.meals[k].mealType == 'LAUNCH_2') {
                                 launch2 = data.meals[k];
+                            }else if(data.meals[k].mealType == 'SALAD_1'){
+                                salad1 = data.meals[k];
+                            }else if(data.meals[k].mealType == 'SALAD_2'){
+                                salad2 = data.meals[k];
+                            }else if(data.meals[k].mealType == 'MRICE'){
+                                mrice = data.meals[k];
+                            }else if(data.meals[k].mealType == 'DESSERT'){
+                                dessert = data.meals[k];
                             } else if (data.meals[k].mealType == 'DINNER') {
                                 dinner = data.meals[k];
                             }
@@ -42,10 +76,32 @@ $(document).ready(function() {
                             $('#form-edit-l1-menu1').val(launch1['menu1']);
                             $('#form-edit-l1-menu2').val(launch1['menu2']);
                             $('#form-edit-l1-menu3').val(launch1['menu3']);
+                            $('#form-edit-l1-menu4').val(launch1['menu4']);
+                            $('#form-edit-l1-menu5').val(launch1['menu5']);
+                            $('#form-edit-l1-menu6').val(launch1['menu6']);
+                            $('#form-edit-l1-menu7').val(launch1['menu7']);
+                        }else {}
+                        if(launch2 != null){
+                            $('#form-edit-l2-menu1').val(launch2['menu1']);
+                            $('#form-edit-l2-menu2').val(launch2['menu2']);
+                            $('#form-edit-l2-menu3').val(launch2['menu3']);
+                            $('#form-edit-l2-menu4').val(launch2['menu4']);
+                            $('#form-edit-l2-menu5').val(launch2['menu5']);
+                            $('#form-edit-l2-menu6').val(launch2['menu6']);
+                            $('#form-edit-l2-menu7').val(launch2['menu7']);
+                        }else{}
+                           $('#form-edit-salad1').val(data['salad1']);
+                           $('#form-edit-salad2').val(data['salad2']);
+                        if(dinner != null){
+                             $('#form-edit-d1-menu1').val(dinner['menu1']);
+                             $('#form-edit-d1-menu2').val(dinner['menu2']);
+                             $('#form-edit-d1-menu3').val(dinner['menu3']);
+                             $('#form-edit-d1-menu4').val(dinner['menu4']);
+                             $('#form-edit-d1-menu5').val(dinner['menu5']);
+                             $('#form-edit-d1-menu6').val(dinner['menu6']);
+                             $('#form-edit-d1-menu7').val(dinner['menu7']);
                         }
-                        $('#form-edit-salad1').val(data['salad1']);
-                    } else {
-                    }
+                        }
                 }
             });
         } else {
@@ -86,20 +142,45 @@ $(document).ready(function() {
         launch1['menu1'] = $('#form-edit-l1-menu1').val();
         launch1['menu2'] = $('#form-edit-l1-menu2').val();
         launch1['menu3'] = $('#form-edit-l1-menu3').val();
+        launch1['menu4'] = $('#form-edit-l1-menu4').val();
+        launch1['menu5'] = $('#form-edit-l1-menu5').val();
+        launch1['menu6'] = $('#form-edit-l1-menu6').val();
+        launch1['menu7'] = $('#form-edit-l1-menu7').val();
+
         if (launch2 == null) {
             launch2 = {};
             launch2['mealType']= 'LAUNCH_2';
 
             menuData.meals.push(launch2);
         }
+        launch2['menu1'] = $('#form-edit-l2-menu1').val();
+        launch2['menu2'] = $('#form-edit-l2-menu2').val();
+        launch2['menu3'] = $('#form-edit-l2-menu3').val();
+        launch2['menu4'] = $('#form-edit-l2-menu4').val();
+        launch2['menu5'] = $('#form-edit-l2-menu5').val();
+        launch2['menu6'] = $('#form-edit-l2-menu6').val();
+        launch2['menu7'] = $('#form-edit-l2-menu7').val();
+
+       menuData['salad1'] = $('#form-edit-salad1').val();
+       menuData['salad2'] = $('#form-edit-salad2').val();
+       menuData['mrice'] = $('#form-edit-mrice').val();
+       menuData['dessert'] = $('#form-edit-dessert').val();
+
         if (dinner == null) {
             dinner = {};
             dinner['mealType']= 'DINNER';
 
             menuData.meals.push(dinner);
         }
+        dinner['menu1'] = $('#form-edit-d1-menu1').val();
+        dinner['menu2'] = $('#form-edit-d1-menu2').val();
+        dinner['menu3'] = $('#form-edit-d1-menu3').val();
+        dinner['menu4'] = $('#form-edit-d1-menu4').val();
+        dinner['menu5'] = $('#form-edit-d1-menu5').val();
+        dinner['menu6'] = $('#form-edit-d1-menu6').val();
+        dinner['menu7'] = $('#form-edit-d1-menu7').val()
 
-        menuData['salad1'] = $('#form-edit-salad1').val();
+
 
         console.log(JSON.stringify(menuData));
 
@@ -159,6 +240,10 @@ function reload() {
 
                 var launch1 = null;
                 var launch2 = null;
+                var salad1 = null;
+                var salad2 = null;
+                var mrice = null;
+                var dessert = null;
                 var dinner = null;
 
                 for (var k = 0; k < data.meals.length; k++) {
@@ -170,6 +255,7 @@ function reload() {
                         dinner = data.meals[k];
                     }
                 }
+
 
                 if (launch1 != null) {
                     for (var i = 1; i <= 7; i++) {
@@ -195,6 +281,40 @@ function reload() {
                 } else {
                     for (var i = 1; i <= 7; i++) {
                         $('#table-l2-' + i).html('-');
+                    }
+                }
+                if(data.salad1 == null || data.salad1 == ''){
+                    $('#table-salad1').html('-');
+                }else{
+                    $('#table-salad1').html(data.salad1);
+                }
+               if(data.salad2 == null || data.salad2 == ''){
+                    $('#table-salad2').html('-');
+                }else{
+                    $('#table-salad2').html(data.salad2);
+                }
+               if(data.mrice == null || data.mrice == ''){
+                    $('#table-mrice').html('-');
+                }else{
+                    $('#table-mrice').html(data.mrice);
+                    console.log(data.mrice);
+                }
+               if(data.dessert== null || data.dessert == ''){
+                    $('#table-dessert').html('-');
+                }else{
+                    $('#table-dessert').html(data.dessert);
+                }
+                if (dinner != null) {
+                    for (var i = 1; i <= 7; i++) {
+                        if (dinner['menu' + i] == null || dinner['menu' + i] == '') {
+                            $('#table-d1-' + i).html('-');
+                        } else {
+                            $('#table-d1-' + i).html(dinner['menu' + i]);
+                        }
+                    }
+                } else {
+                    for (var i = 1; i <= 7; i++) {
+                        $('#table-d1-' + i).html('-');
                     }
                 }
             } else {
