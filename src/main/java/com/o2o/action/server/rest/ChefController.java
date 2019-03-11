@@ -172,6 +172,8 @@ public class ChefController {
             if (eMenus != null) {
                 eMenus.setSalad1(mealMenu.getSalad1());
                 eMenus.setSalad2(mealMenu.getSalad2());
+                eMenus.setMrice(mealMenu.getMrice());
+                eMenus.setDessert(mealMenu.getDessert());
                 menuRepository.save(eMenus).getId();
             } else {
                 return null;

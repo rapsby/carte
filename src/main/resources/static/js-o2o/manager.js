@@ -59,14 +59,6 @@ $(document).ready(function() {
                                 launch1 = data.meals[k];
                             } else if (data.meals[k].mealType == 'LAUNCH_2') {
                                 launch2 = data.meals[k];
-                            }else if(data.meals[k].mealType == 'SALAD_1'){
-                                salad1 = data.meals[k];
-                            }else if(data.meals[k].mealType == 'SALAD_2'){
-                                salad2 = data.meals[k];
-                            }else if(data.meals[k].mealType == 'MRICE'){
-                                mrice = data.meals[k];
-                            }else if(data.meals[k].mealType == 'DESSERT'){
-                                dessert = data.meals[k];
                             } else if (data.meals[k].mealType == 'DINNER') {
                                 dinner = data.meals[k];
                             }
@@ -92,6 +84,8 @@ $(document).ready(function() {
                         }else{}
                            $('#form-edit-salad1').val(data['salad1']);
                            $('#form-edit-salad2').val(data['salad2']);
+                           $('#form-edit-mrice').val(data['mrice']);
+                           $('#form-edit-dessert').val(data['dessert']);
                         if(dinner != null){
                              $('#form-edit-d1-menu1').val(dinner['menu1']);
                              $('#form-edit-d1-menu2').val(dinner['menu2']);
@@ -105,7 +99,7 @@ $(document).ready(function() {
                 }
             });
         } else {
-
+         reload();
         }
     });
 
@@ -215,6 +209,7 @@ $(document).ready(function() {
                 }
             });
         }
+           //reload();
     });
     //
 
