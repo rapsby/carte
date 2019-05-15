@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+// url이 /manager일 때
 @WebFilter(urlPatterns = "/manager/*")
 public class AdminFilter implements Filter {
 
@@ -22,15 +23,15 @@ public class AdminFilter implements Filter {
         // checkAuth = true;
         // }
 
-        if (checkAuth) {
+        if (checkAuth) { // 세션을 받아서 
             HttpSession httpSession = req.getSession();
-            if (httpSession == null) {
+            if (httpSession == null) { // null이면 /login으로
                 resp.sendRedirect(req.getContextPath() + "/login");
                 return;
             }
 
             String userId = (String) httpSession.getAttribute("userId");
-            if (userId == null || userId.length() <= 0) {
+            if (userId == null || userId.length() <= 0) { // null이지만 아무 값이 아닐 때?
                 resp.sendRedirect(req.getContextPath() + "/login");
                 return;
             }

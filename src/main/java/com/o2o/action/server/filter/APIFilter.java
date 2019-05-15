@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+// url이 /api/1.0/일 때
 @WebFilter(urlPatterns = "/api/1.0/*")
 public class APIFilter implements Filter {
 
@@ -21,7 +22,7 @@ public class APIFilter implements Filter {
         if (req.getServletPath().equalsIgnoreCase("/api/1.0/login") || req.getServletPath().equalsIgnoreCase("/api/1.0/logout")) {
         } else {
             if (!req.getMethod().equalsIgnoreCase("get")) {
-                checkAuth = true;
+                checkAuth = false;
             }
         }
 
