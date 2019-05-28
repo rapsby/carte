@@ -8,6 +8,7 @@ buildscript {
     	classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath("org.springframework.boot:spring-boot-gradle-plugin:2.1.2.RELEASE")
 	    classpath("org.hidetake:gradle-ssh-plugin:2.2.0")
+	    
     }
 }
 
@@ -38,9 +39,13 @@ repositories {
 }
 
 dependencies {
+	compile('io.springfox:springfox-swagger2:2.6.1')
+	compile('io.springfox:springfox-swagger-ui:2.6.1')
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile("org.springframework.boot:spring-boot-starter-hateoas")
+    compile("org.apache.httpcomponents:httpclient:4.5.2")
     //compile("org.springframework.boot:spring-boot-devtools")
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
     compile("org.postgresql:postgresql:42.2.5")
@@ -74,7 +79,7 @@ task deploy {
 				put from: "${path}/${filename}", into: './'
 				//execute ("mkdir /opt/tomcat/webapps/chef")
 				execute ("sudo chown tomcat ${filename}")
-				execute ("sudo mv ${filename} /opt/dev/tomcat_d6/webapps/devsvr6.war")
+				execute ("sudo mv ${filename} /opt/dev/tomcat_d5/webapps/devsvr5.war")
 				//execute ("sudo service tomcat start")
 				//execute ("cd \$HOME; /usr/bin/pkill -f 'java -jar ${filename}'", ignoreError: true)
 				//execute ("cd \$HOME; authbind --deep java -jar ${filename} < /dev/null > log/server_out.log 2> log/server_err.log & ")

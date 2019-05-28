@@ -1,10 +1,15 @@
 package com.o2o.action.server.rest;
 
 public class Study1JSON {
-	String name;
-	String age;
+	private String name;
+	private long age;
 	
 	public Study1JSON() {
+	}
+	
+	public Study1JSON(String name, long age) {
+		this.name = name;
+		this.age = age;
 	}
 
 	public String getName() {
@@ -15,11 +20,11 @@ public class Study1JSON {
 		this.name = name;
 	}
 
-	public String getAge() {
+	public long getAge() {
 		return age;
 	}
 
-	public void setAge(String age) {
+	public void setAge(long age) {
 		this.age = age;
 	}
 	

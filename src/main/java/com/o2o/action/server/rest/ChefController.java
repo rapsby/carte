@@ -6,12 +6,15 @@ import com.o2o.action.server.app.GogumaApp;
 import com.o2o.action.server.db.MealDetail;
 import com.o2o.action.server.db.MealDetail.MealType;
 import com.o2o.action.server.db.MealMenu;
+import com.o2o.action.server.rest.Study1JSON;
 import com.o2o.action.server.repo.DateMenuRepository;
 import com.o2o.action.server.repo.MealDetailRepository;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,11 +23,14 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicLong;
+
 
 @RestController
 public class ChefController {
 	private final App goguma;
 	private final ChefApp dchef;
+	private final AtomicLong counter = new AtomicLong();
 
 	@Autowired
 	private DateMenuRepository menuRepository;
@@ -42,6 +48,34 @@ public class ChefController {
 			list.add(item);
 		}
 		return list;
+	}
+	@RequestMapping(value = "/todo")
+	public Todo basic() {
+		return new Todo(counter.incrementAndGet(), "hi");
+	}
+	@RequestMapping(value = "/todop", method = RequestMethod.POST)
+	public Todo postBasic(@RequestParam(value = "todoTitle") String todoTitle) {
+		return new Todo(counter.incrementAndGet(), todoTitle);
+	}
+	@RequestMapping(value = "todor", method = RequestMethod.POST)
+	public ResponseEntity<Todo> postBasicResponseEntity(
+			@RequestParam(value = "todoTitle") String todoTitle){
+				return new ResponseEntity(new Todo(counter.incrementAndGet(), 
+						todoTitle), HttpStatus.CREATED);
+	}
+	@RequestMapping(value = "todos/{todoId}", method = RequestMethod.GET)
+	public Todo getPath(@PathVariable int todoId) {
+		Todo todo1 = new Todo(1L, "111");
+		Todo todo2 = new Todo(2L, "2222");
+		Todo todo3 = new Todo(3L, "333");
+		
+		Map<Integer, Todo> todoMap = new HashMap<>();
+		todoMap.put(1, todo1);
+		todoMap.put(2, todo2);
+		todoMap.put(3, todo3);
+		
+		return todoMap.get(todoId);
+		
 	}
 
 	@RequestMapping(value = "/simple", method = RequestMethod.POST)
@@ -134,7 +168,7 @@ public class ChefController {
 		if (toDate == null) {
 			c.setTime(fromDate);
 			c.set(Calendar.DAY_OF_WEEK, c.getActualMinimum(Calendar.DAY_OF_WEEK));
-			c.add(Calendar.DATE, 7);
+			c.add(Calendar.DATE, 14);
 			toDate = c.getTime();
 		}
 		toDate = DateUtils.truncate(toDate, Calendar.DATE);

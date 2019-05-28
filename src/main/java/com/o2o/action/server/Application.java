@@ -18,7 +18,7 @@ public class Application extends SpringBootServletInitializer {
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
         UserRepository userRepository = context.getBean(UserRepository.class);
-        userRepository.save(new UserEntity("강성욱", 55, UserRole.ADMIN));
+        userRepository.save(new UserEntity("강성욱21", 44, UserRole.ADMIN));
         UserEntity user = userRepository.findByUserName("강성욱");
         System.out.println("나이 : " + user.getAge() + ", " 
         + "이름: " + user.getUserName()
