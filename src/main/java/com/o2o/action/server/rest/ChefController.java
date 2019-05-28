@@ -271,11 +271,12 @@ public class ChefController {
 		}
 		return map;
 	}
-
+/*
 	@RequestMapping(value = "/api/1.0/form1", method = RequestMethod.POST)
 	public @ResponseBody String form1(@RequestBody Study1JSON json, HttpServletRequest request, HttpServletResponse response) {
 		System.out.println(json.getName() + "," + json.getAge());
 
 		return "";
 	}
+	*/
 }
